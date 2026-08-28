@@ -17,3 +17,10 @@ That abort() synchronously triggers the signal.addEventListener('abort', ...) li
 Still within the same useEffect run, synchronously, a new AbortController is created, stored in controllerRef.current, and debouncedGetProducts is called with the new filters and the new signal. After the 350ms debounce, getProducts runs with the new, URL-derived filters, and a fresh retry cycle starts from scratch if needed.
 
 As a result, the old 503 retry cycle is fully and permanently cancelled mid-backoff, without waiting for that 400ms to elapse — no extra fetch is ever sent for the stale filters, and the new, URL-derived search proceeds independently, protected from stale-response race conditions by the seq and signal.aborted checks.
+
+count and /search can disagree (the mock server admits this). We let the
+results response win because the badge must describe the list actually on
+screen — a count of 12 over 9 rendered cards is a visible contradiction,
+while a stale-but-fast number that gets corrected is just a loading state.
+resultsArrivedRef latches per-search so a slow /count can never overwrite
+a count already derived from results.
