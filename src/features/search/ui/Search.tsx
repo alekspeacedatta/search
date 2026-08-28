@@ -20,6 +20,7 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
     const [ categories, setCategories ] = useState<Category[]>([]);
     const [ count, setCount ] = useState<number>(0);
     const [data, setData] = useState<SearchResponseType | undefined>(undefined);
+    const [error, setError] = useState(false);
     
     const { filters, updateFilters } = usePopState();
     const { q, selectedCategories, minPrice, maxPrice } = filters;
@@ -39,10 +40,11 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
                 setData(data);
                 if (data) {
                   setCount(data.results.length); 
+                  setError(false);
                   resultsArrivedRef.current = true;
                 }
               }
-            });
+            }).catch(() => setError(true));
           },
           delay,
         ),
@@ -99,7 +101,7 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
     if (count === undefined) return null;
 
     const { results } = data;
-
+  
     return (
       <div className="flex flex-col md:flex-row items-start ">
         <div className="flex flex-col gap-4 flex-1 p-4 h-fit border border-gray-200 m-4 bg-white rounded-xl shadow-md sticky top-4">
@@ -145,6 +147,9 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
                 key={item.id}
                 {...item}
               />
+          )}
+          {error && (
+            <p className="text-red-600 text-sm">Something went wrong. Showing last results.</p>
           )}
         </div>
       </div>
