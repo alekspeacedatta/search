@@ -90,6 +90,11 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
       handleParamChange(newCategories, "categories");
     };
 
+    const handleFilterUpdate = ( value: string, param: string ) => {
+      updateFilters({ [param]: value });
+      handleParamChange( value, param );
+    }
+
     if (data === undefined) return null;
     if (count === undefined) return null;
 
@@ -103,30 +108,21 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
           <CustomInput
             value={q}
             placeholder="search for a product"
-            onChange={(e) => {
-              handleParamChange(e.target.value, "q");
-              updateFilters({ q: e.target.value });
-            }}
-          />
+            onChange={(e) => {handleFilterUpdate(e.target.value, 'q')}}
+            />
 
           <div className="grid grid-cols items-center gap-3">
             <CustomInput
               type="number"
               placeholder="Min Price"
               value={minPrice}
-              onChange={(e) => {
-                updateFilters({ minPrice: e.target.value });
-                handleParamChange(e.target.value, "minPrice");
-              }}
-            />
+              onChange={(e) => {handleFilterUpdate(e.target.value, 'minPrice')}}
+              />
             <CustomInput
               type="number"
               placeholder="Max Price"
               value={maxPrice}
-              onChange={(e) => {
-                updateFilters({ maxPrice: e.target.value });
-                handleParamChange(e.target.value, "maxPrice");
-              }}
+              onChange={(e) => {handleFilterUpdate(e.target.value, 'maxPrice')}}
             />
 
             {categories.map((category: Category) => {
