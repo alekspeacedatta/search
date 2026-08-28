@@ -103,8 +103,8 @@ import type { DebouncedFiltresArgumentsTypes } from "../types/filter.types";
     const { results } = data;
   
     return (
-      <div className="flex flex-col md:flex-row items-start ">
-        <div className="flex flex-col gap-4 flex-1 p-4 h-fit border border-gray-200 m-4 bg-white rounded-xl shadow-md sticky top-4">
+      <div className="flex flex-col min-[478px]:flex-row max-[478px]:w-full min-[478px]:items-start">
+        <div className="flex flex-col gap-4 flex-1 p-4 h-fit border border-gray-200 m-4 bg-white rounded-xl shadow-md min-[478]:sticky top-4">
           <h2 className="font-bold text-xl">Search for a product</h2>
           <p><span className="text-sm font-semibold">total: </span> {count}</p>
           <CustomInput
